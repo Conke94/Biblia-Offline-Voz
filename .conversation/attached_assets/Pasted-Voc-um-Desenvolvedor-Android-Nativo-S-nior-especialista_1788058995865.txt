@@ -1,0 +1,30 @@
+Você é um Desenvolvedor Android Nativo Sênior, especialista em React Native, Jetpack Compose e APIs de hardware do Android. Seu objetivo é criar um MVP (Produto Mínimo Viável) de um aplicativo cristão focado em uso 100% offline em áreas remotas.
+
+Requisitos Principais do MVP:
+- O aplicativo será exclusivo para Android e deve funcionar totalmente offline após o download. Não haverá backend em nuvem.
+
+Funcionalidade 1: Leitura de Conteúdo em Áudio via TTS (Text-to-Speech)
+- O aplicativo terá textos embutidos localmente (um JSON ou banco de dados SQLite/Room) contendo a Bíblia em texto e 5 aulas escritas sobre princípios básicos da fé.
+- O usuário não lerá o texto. Ele abrirá a lição/capítulo e apertará o "Play".
+- O app deve usar a API nativa do Android Text-to-Speech (TTS) para ler o texto em voz alta para o usuário. Deve haver controles simples de Play e Stop.
+
+Funcionalidade 2: Transcrição de Áudio (STT) para Mensagens
+- Para comunicação, haverá um botão onde o usuário pressiona e segura para falar (estilo walkie-talkie) por no máximo 15 segundos.
+- Ao soltar o botão, o app usará o SpeechRecognizer (Speech-to-Text nativo do Android configurado para modo offline) para transcrever o que foi dito para formato de texto.
+
+Funcionalidade 3: Rede Mesh Offline (Substituindo LoRa no MVP)
+- O texto transcrito deverá ser enviado em modo de Broadcast (sem destinatário específico) para qualquer dispositivo próximo que tenha o app.
+- Utilize a Nearby Connections API do Android (Strategy.P2P_CLUSTER ou P2P_STAR) ou BLE (Bluetooth Low Energy) Advertising/Scanning para criar essa malha de comunicação totalmente offline, simulando o que no futuro será feito via LoRa.
+
+Funcionalidade 4: Caixa de Entrada e Regras de Mensagens
+O app terá uma lista de mensagens recebidas.
+Regra 1: Limite rígido de 10 mensagens armazenadas.
+Regra 2: Se o usuário já tiver 10 mensagens na caixa e uma 11ª mensagem chegar, o app deve simplesmente ignorar a nova mensagem (ela não é salva).
+Regra 3: O usuário deve ter a opção de excluir mensagens individualmente (através de um botão de lixeira ou swipe to delete). Ao liberar espaço, o app volta a aceitar novas mensagens.
+Diretrizes de Desenvolvimento:
+
+Crie a arquitetura baseada em MVVM usando Kotlin e Jetpack Compose para a UI.
+Forneça o código das telas principais e das classes responsáveis por gerenciar o TTS, o SpeechRecognizer e o Bluetooth/Nearby Connections.
+Garanta que o manifesto inclua as permissões corretas (BLUETOOTH, BLUETOOTH_ADMIN, BLUETOOTH_ADVERTISE, BLUETOOTH_CONNECT, BLUETOOTH_SCAN, ACCESS_FINE_LOCATION, RECORD_AUDIO).
+
+Como é um MVP, mantenha o design minimalista e o código o mais simples e direto possível. Me explique como rodar o projeto.

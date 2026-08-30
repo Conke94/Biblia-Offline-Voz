@@ -179,14 +179,24 @@ export default function LibraryScreen() {
           )}
         />
       )}
-      <Pressable
-        testID="open-transcription"
-        onPress={() => router.push('/transcribe')}
-        style={[styles.transcribeButton, { backgroundColor: colors.primary }]}
-      >
-        <Feather name="mic" size={22} color={colors.primaryForeground} />
-        <Text style={[styles.transcribeText, { color: colors.primaryForeground }]}>Transcrever voz</Text>
-      </Pressable>
+      <View style={styles.communicationActions}>
+        <Pressable
+          testID="open-inbox"
+          onPress={() => router.push('/inbox')}
+          style={[styles.inboxButton, { backgroundColor: colors.secondary, borderColor: colors.border }]}
+        >
+          <Feather name="inbox" size={20} color={colors.foreground} />
+          <Text style={[styles.inboxText, { color: colors.foreground }]}>Caixa de entrada</Text>
+        </Pressable>
+        <Pressable
+          testID="open-transcription"
+          onPress={() => router.push('/transcribe')}
+          style={[styles.transcribeButton, { backgroundColor: colors.primary }]}
+        >
+          <Feather name="mic" size={21} color={colors.primaryForeground} />
+          <Text style={[styles.transcribeText, { color: colors.primaryForeground }]}>Comunicar</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -208,10 +218,14 @@ const styles = StyleSheet.create({
   cardText: { flex: 1, marginRight: 10 },
   cardTitle: { fontSize: 17, fontFamily: 'Inter_600SemiBold', marginBottom: 4 },
   cardSubtitle: { fontSize: 14, lineHeight: 19, fontFamily: 'Inter_400Regular' },
-  transcribeButton: {
+  communicationActions: {
     position: 'absolute',
     right: 20,
     bottom: 24,
+    alignItems: 'flex-end',
+    gap: 10,
+  },
+  transcribeButton: {
     minHeight: 54,
     paddingHorizontal: 20,
     borderRadius: 27,
@@ -220,5 +234,7 @@ const styles = StyleSheet.create({
     gap: 10,
     elevation: 4,
   },
+  inboxButton: { minHeight: 45, paddingHorizontal: 16, borderRadius: 23, borderWidth: 1, flexDirection: 'row', alignItems: 'center', gap: 8 },
+  inboxText: { fontSize: 14, fontFamily: 'Inter_700Bold' },
   transcribeText: { fontSize: 15, fontFamily: 'Inter_700Bold' },
 });

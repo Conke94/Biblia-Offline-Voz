@@ -1,0 +1,1 @@
+- [Validação Android nativa](android-native-validation.md) — o ambiente gera o projeto via Expo prebuild, mas o APK e os recursos entre aparelhos exigem SDK local e celulares reais.

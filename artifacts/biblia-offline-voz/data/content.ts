@@ -96,6 +96,20 @@ export const lessons: ContentItem[] = [
     subtitle: 'Lição 3',
     text: 'Jesus nos prometeu uma paz diferente. A paz de Cristo não depende das circunstâncias ao nosso redor. Ela é uma certeza silenciosa e forte dentro do nosso coração, de que Deus está no controle.',
   },
+  {
+    id: 'a-fe',
+    type: 'aula',
+    title: 'Caminhando pela Fé',
+    subtitle: 'Lição 4',
+    text: 'A fé nos convida a confiar em Deus mesmo quando não vemos todo o caminho. Cada pequeno passo de obediência fortalece o coração e nos lembra que não caminhamos sozinhos.',
+  },
+  {
+    id: 'a-perdao',
+    type: 'aula',
+    title: 'O Poder do Perdão',
+    subtitle: 'Lição 5',
+    text: 'Perdoar não apaga o que aconteceu, mas entrega a dor a Deus. Em Cristo recebemos perdão e aprendemos, dia após dia, a oferecer a mesma graça aos outros.',
+  },
 ];
 
 const chapterContent: ContentItem[] = bibleBooks.flatMap((book) =>

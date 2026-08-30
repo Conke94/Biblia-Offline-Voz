@@ -14,6 +14,7 @@ import {
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColors } from '@/hooks/useColors';
+import { CommunicationProvider } from '@/context/CommunicationContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,6 +40,7 @@ function RootLayoutNav() {
       <Stack.Screen name="index" options={{ headerShown: false, title: 'Início' }} />
       <Stack.Screen name="listen/[id]" options={{ title: 'Ouvir', presentation: 'card' }} />
       <Stack.Screen name="transcribe" options={{ title: 'Transcrever voz', presentation: 'card' }} />
+      <Stack.Screen name="inbox" options={{ title: 'Caixa de entrada', presentation: 'card' }} />
     </Stack>
   );
 }
@@ -65,7 +67,9 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView>
             <KeyboardProvider>
-              <RootLayoutNav />
+              <CommunicationProvider>
+                <RootLayoutNav />
+              </CommunicationProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>

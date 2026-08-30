@@ -17,7 +17,6 @@ export default function ListenScreen() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [rate, setRate] = useState<number>(1.0);
   const [speechSupported, setSpeechSupported] = useState(true);
 
   // Stop speech when component unmounts
@@ -63,7 +62,7 @@ export default function ListenScreen() {
       
       Speech.speak(item?.text || '', {
         language: 'pt-BR',
-        rate: rate,
+        rate: 1,
         onDone: () => {
           setIsPlaying(false);
           setIsPaused(false);
@@ -79,36 +78,13 @@ export default function ListenScreen() {
         }
       });
     }
-  }, [item?.text, rate, isPaused, speechSupported]);
+  }, [item?.text, isPaused, speechSupported]);
 
   const handleStop = useCallback(async () => {
     await Speech.stop();
     setIsPlaying(false);
     setIsPaused(false);
   }, []);
-
-  const handleChangeRate = useCallback(async (newRate: number) => {
-    setRate(newRate);
-    const currentlySpeaking = await Speech.isSpeakingAsync();
-    if (currentlySpeaking) {
-      await Speech.stop();
-      // Restart with new rate
-      setIsPlaying(true);
-      setIsPaused(false);
-      Speech.speak(item?.text || '', {
-        language: 'pt-BR',
-        rate: newRate,
-        onDone: () => {
-          setIsPlaying(false);
-          setIsPaused(false);
-        },
-        onStopped: () => {
-          setIsPlaying(false);
-          setIsPaused(false);
-        },
-      });
-    }
-  }, [item?.text]);
 
   if (!item) {
     return (
@@ -172,32 +148,7 @@ export default function ListenScreen() {
         )}
 
         <View style={styles.mainControlsRow}>
-          {/* Rate Selector */}
-          <View style={styles.rateSelector}>
-            {[0.75, 1.0, 1.25].map(r => (
-              <Pressable
-                key={r}
-                testID={`rate-${r}`}
-                onPress={() => handleChangeRate(r)}
-                style={[
-                  styles.rateButton,
-                  { 
-                    backgroundColor: rate === r ? colors.primary : colors.secondary,
-                    borderRadius: colors.radius - 8,
-                  }
-                ]}
-              >
-                <Text 
-                  style={[
-                    styles.rateText, 
-                    { color: rate === r ? colors.primaryForeground : colors.secondaryForeground }
-                  ]}
-                >
-                  {r}x
-                </Text>
-              </Pressable>
-            ))}
-          </View>
+          <Text style={[styles.fixedRateText, { color: colors.mutedForeground }]}>Velocidade normal</Text>
 
           <View style={styles.playbackButtons}>
             {isPlaying && (
@@ -333,15 +284,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  rateSelector: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  rateButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-  },
-  rateText: {
+  fixedRateText: {
     fontSize: 14,
     fontFamily: 'Inter_600SemiBold',
   },

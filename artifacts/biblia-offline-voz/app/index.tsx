@@ -1,180 +1,228 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Pressable, FlatList, Platform } from 'react-native';
+import { FlatList, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
-import { contentData, ContentType } from '@/data/content';
-import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
+import { bibleBooks, BibleBook, BibleChapter, lessons, ContentType } from '@/data/content';
+
+type BibleLevel = 'books' | 'chapters' | 'verses';
 
 export default function LibraryScreen() {
   const insets = useSafeAreaInsets();
   const colors = useColors();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<ContentType>('biblia');
-
-  const filteredContent = contentData.filter(item => item.type === activeTab);
+  const [level, setLevel] = useState<BibleLevel>('books');
+  const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
+  const [selectedChapter, setSelectedChapter] = useState<BibleChapter | null>(null);
 
   const paddingTop = Platform.OS === 'web' ? Math.max(insets.top, 67) : insets.top;
 
+  const selectTab = (tab: ContentType) => {
+    setActiveTab(tab);
+    if (tab === 'biblia') {
+      setLevel('books');
+      setSelectedBook(null);
+      setSelectedChapter(null);
+    }
+  };
+
+  const goBackLevel = () => {
+    if (level === 'verses') {
+      setLevel('chapters');
+      setSelectedChapter(null);
+    } else if (level === 'chapters') {
+      setLevel('books');
+      setSelectedBook(null);
+    }
+  };
+
+  const title =
+    activeTab === 'aula'
+      ? 'Aulas'
+      : level === 'books'
+        ? 'Livros'
+        : level === 'chapters'
+          ? selectedBook?.name
+          : `${selectedBook?.name} ${selectedChapter?.number}`;
+
+  const renderBibleContent = () => {
+    if (level === 'books') {
+      return (
+        <FlatList
+          data={bibleBooks}
+          keyExtractor={(book) => book.id}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => (
+            <ListCard
+              title={item.name}
+              subtitle={`${item.chapters.length} capítulos cadastrados`}
+              icon="book"
+              testID={`book-${item.id}`}
+              onPress={() => {
+                setSelectedBook(item);
+                setLevel('chapters');
+              }}
+            />
+          )}
+        />
+      );
+    }
+
+    if (level === 'chapters' && selectedBook) {
+      return (
+        <FlatList
+          data={selectedBook.chapters}
+          keyExtractor={(chapter) => String(chapter.number)}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => (
+            <ListCard
+              title={`Capítulo ${item.number}`}
+              subtitle={`${item.verses.length} versículos cadastrados`}
+              icon="bookmark"
+              testID={`chapter-${item.number}`}
+              onPress={() => {
+                setSelectedChapter(item);
+                setLevel('verses');
+              }}
+            />
+          )}
+        />
+      );
+    }
+
+    return (
+      <FlatList
+        data={selectedChapter?.verses ?? []}
+        keyExtractor={(verse) => String(verse.number)}
+        contentContainerStyle={styles.listContent}
+        renderItem={({ item }) => (
+          <ListCard
+            title={`Versículo ${item.number}`}
+            subtitle={item.text}
+            icon="volume-2"
+            testID={`verse-${item.number}`}
+            onPress={() => router.push(`/listen/${item.contentId}`)}
+          />
+        )}
+      />
+    );
+  };
+
+  const ListCard = ({
+    title: cardTitle,
+    subtitle,
+    icon,
+    onPress,
+    testID,
+  }: {
+    title: string;
+    subtitle: string;
+    icon: React.ComponentProps<typeof Feather>['name'];
+    onPress: () => void;
+    testID: string;
+  }) => (
+    <Pressable
+      testID={testID}
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.card,
+        {
+          backgroundColor: colors.card,
+          borderColor: colors.border,
+          borderRadius: colors.radius,
+          opacity: pressed ? 0.75 : 1,
+        },
+      ]}
+    >
+      <View style={[styles.cardIcon, { backgroundColor: colors.muted }]}>
+        <Feather name={icon} size={22} color={colors.primary} />
+      </View>
+      <View style={styles.cardText}>
+        <Text style={[styles.cardTitle, { color: colors.foreground }]}>{cardTitle}</Text>
+        <Text numberOfLines={2} style={[styles.cardSubtitle, { color: colors.mutedForeground }]}>
+          {subtitle}
+        </Text>
+      </View>
+      <Feather name="chevron-right" size={20} color={colors.primary} />
+    </Pressable>
+  );
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]} testID="library-screen">
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <View style={[styles.header, { paddingTop }]}>
         <Text style={[styles.headerTitle, { color: colors.foreground }]}>Biblioteca</Text>
-        
-        <View style={[styles.tabContainer, { backgroundColor: colors.secondary, borderRadius: colors.radius }]}>
-          <Pressable
-            testID="tab-biblia"
-            onPress={() => setActiveTab('biblia')}
-            style={[
-              styles.tab,
-              activeTab === 'biblia' && { backgroundColor: colors.background, borderRadius: colors.radius - 2 },
-            ]}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                { color: activeTab === 'biblia' ? colors.primary : colors.secondaryForeground },
-                activeTab === 'biblia' && styles.tabTextActive
-              ]}
+        <View style={[styles.tabs, { backgroundColor: colors.secondary, borderRadius: colors.radius }]}>
+          {(['biblia', 'aula'] as ContentType[]).map((tab) => (
+            <Pressable
+              key={tab}
+              testID={`tab-${tab}`}
+              onPress={() => selectTab(tab)}
+              style={[styles.tab, activeTab === tab && { backgroundColor: colors.primary, borderRadius: colors.radius - 3 }]}
             >
-              Bíblia
-            </Text>
-          </Pressable>
-          <Pressable
-            testID="tab-aulas"
-            onPress={() => setActiveTab('aula')}
-            style={[
-              styles.tab,
-              activeTab === 'aula' && { backgroundColor: colors.background, borderRadius: colors.radius - 2 },
-            ]}
-          >
-            <Text
-              style={[
-                styles.tabText,
-                { color: activeTab === 'aula' ? colors.primary : colors.secondaryForeground },
-                activeTab === 'aula' && styles.tabTextActive
-              ]}
-            >
-              Aulas
-            </Text>
-          </Pressable>
+              <Text style={[styles.tabText, { color: colors.foreground }]}>
+                {tab === 'biblia' ? 'Bíblia' : 'Aulas'}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+        <View style={styles.sectionHeader}>
+          {activeTab === 'biblia' && level !== 'books' && (
+            <Pressable testID="level-back" onPress={goBackLevel} style={styles.back}>
+              <Feather name="arrow-left" size={22} color={colors.primary} />
+            </Pressable>
+          )}
+          <View>
+            <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{title}</Text>
+            {activeTab === 'biblia' && (
+              <Text style={[styles.breadcrumb, { color: colors.mutedForeground }]}>
+                Livro → Capítulo → Versículo
+              </Text>
+            )}
+          </View>
         </View>
       </View>
 
-      <FlatList
-        data={filteredContent}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={[
-          styles.listContent,
-          { paddingBottom: insets.bottom + (Platform.OS === 'web' ? 34 : 20) }
-        ]}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <Pressable
-            testID={`item-${item.id}`}
-            style={({ pressed }) => [
-              styles.card,
-              {
-                backgroundColor: colors.card,
-                borderColor: colors.border,
-                borderRadius: colors.radius,
-                opacity: pressed ? 0.8 : 1,
-                transform: [{ scale: pressed ? 0.98 : 1 }],
-              }
-            ]}
-            onPress={() => router.push(`/listen/${item.id}`)}
-          >
-            <View style={styles.cardHeader}>
-              <View style={styles.cardIconContainer}>
-                {item.type === 'biblia' ? (
-                  <Feather name="book" size={24} color={colors.primary} />
-                ) : (
-                  <Feather name="headphones" size={24} color={colors.primary} />
-                )}
-              </View>
-              <View style={styles.cardTextContainer}>
-                <Text style={[styles.cardTitle, { color: colors.cardForeground }]}>
-                  {item.title}
-                </Text>
-                <Text style={[styles.cardSubtitle, { color: colors.mutedForeground }]}>
-                  {item.subtitle}
-                </Text>
-              </View>
-              <Feather name="chevron-right" size={20} color={colors.mutedForeground} />
-            </View>
-          </Pressable>
-        )}
-      />
+      {activeTab === 'biblia' ? (
+        renderBibleContent()
+      ) : (
+        <FlatList
+          data={lessons}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+          renderItem={({ item }) => (
+            <ListCard
+              title={item.title}
+              subtitle={item.subtitle}
+              icon="headphones"
+              testID={`lesson-${item.id}`}
+              onPress={() => router.push(`/listen/${item.id}`)}
+            />
+          )}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-  },
-  headerTitle: {
-    fontSize: 32,
-    fontFamily: 'Inter_700Bold',
-    marginBottom: 24,
-    marginTop: 8,
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    padding: 4,
-  },
-  tab: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabText: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 16,
-  },
-  tabTextActive: {
-    fontFamily: 'Inter_600SemiBold',
-  },
-  listContent: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    gap: 12,
-  },
-  card: {
-    padding: 16,
-    borderWidth: 1,
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  cardIconContainer: {
-    marginRight: 16,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(140, 90, 70, 0.1)', // Subdued tint for the icon background
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardTextContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontFamily: 'Inter_600SemiBold',
-    marginBottom: 4,
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    fontFamily: 'Inter_400Regular',
-  },
+  container: { flex: 1 },
+  header: { paddingHorizontal: 20, paddingBottom: 8 },
+  headerTitle: { fontSize: 32, fontFamily: 'Inter_700Bold', marginTop: 8, marginBottom: 20 },
+  tabs: { flexDirection: 'row', padding: 4 },
+  tab: { flex: 1, paddingVertical: 11, alignItems: 'center' },
+  tabText: { fontSize: 16, fontFamily: 'Inter_600SemiBold' },
+  sectionHeader: { flexDirection: 'row', alignItems: 'center', minHeight: 84, gap: 12 },
+  back: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
+  sectionTitle: { fontSize: 23, fontFamily: 'Inter_700Bold' },
+  breadcrumb: { fontSize: 13, fontFamily: 'Inter_400Regular', marginTop: 3 },
+  listContent: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 40, gap: 12 },
+  card: { minHeight: 82, padding: 14, borderWidth: 1, flexDirection: 'row', alignItems: 'center' },
+  cardIcon: { width: 46, height: 46, borderRadius: 23, alignItems: 'center', justifyContent: 'center', marginRight: 14 },
+  cardText: { flex: 1, marginRight: 10 },
+  cardTitle: { fontSize: 17, fontFamily: 'Inter_600SemiBold', marginBottom: 4 },
+  cardSubtitle: { fontSize: 14, lineHeight: 19, fontFamily: 'Inter_400Regular' },
 });

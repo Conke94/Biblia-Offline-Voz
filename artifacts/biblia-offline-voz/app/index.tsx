@@ -185,8 +185,8 @@ export default function LibraryScreen() {
           onPress={() => router.push('/inbox')}
           style={[styles.inboxButton, { backgroundColor: colors.secondary, borderColor: colors.border }]}
         >
-          <Feather name="inbox" size={20} color={colors.foreground} />
-          <Text style={[styles.inboxText, { color: colors.foreground }]}>Caixa de entrada</Text>
+          <Feather name="message-circle" size={20} color={colors.foreground} />
+          <Text style={[styles.inboxText, { color: colors.foreground }]}>Conversas</Text>
         </Pressable>
         <Pressable
           testID="open-transcription"
@@ -194,7 +194,7 @@ export default function LibraryScreen() {
           style={[styles.transcribeButton, { backgroundColor: colors.primary }]}
         >
           <Feather name="mic" size={21} color={colors.primaryForeground} />
-          <Text style={[styles.transcribeText, { color: colors.primaryForeground }]}>Comunicar</Text>
+          <Text style={[styles.transcribeText, { color: colors.primaryForeground }]}>Conectar</Text>
         </Pressable>
       </View>
     </View>

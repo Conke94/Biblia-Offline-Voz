@@ -23,15 +23,40 @@ export type SpeechRecognitionBridge = {
   cancel: () => void | Promise<void>;
 };
 
-export type NearbyStatus = { connectedDeviceCount: number; isRunning?: boolean; error?: string };
+// id = deviceId persistente do outro aparelho (nao o endpointId efemero).
+export type NearbyPeer = { id: string; name: string };
+
+export type NearbyStatus = {
+  connectedDeviceCount: number;
+  peers: NearbyPeer[];
+  isRunning?: boolean;
+  error?: string;
+};
+
+export type IncomingMessage = { text: string; peerId: string; peerName: string };
+
+// Pedido de conexao aguardando as duas pessoas conferirem o mesmo codigo.
+export type PairingRequest = {
+  endpointId: string;
+  peerId: string;
+  peerName: string;
+  digits: string;
+  incoming: boolean;
+};
+
+export const BROADCAST_TARGET = 'all';
 
 export type NearbyBridge = {
   isAvailable: () => boolean | Promise<boolean>;
-  start: () => void | Promise<void>;
+  start: (name: string, deviceId: string) => void | Promise<void>;
   stop: () => void | Promise<void>;
-  send: (text: string) => void | Promise<void>;
-  addMessageListener: (listener: (text: string) => void) => (() => void) | void;
+  send: (text: string, target: string) => void | Promise<void>;
+  addMessageListener: (listener: (message: IncomingMessage) => void) => (() => void) | void;
   addStatusListener: (listener: (status: NearbyStatus) => void) => (() => void) | void;
+  addPairingListener: (listener: (request: PairingRequest) => void) => (() => void) | void;
+  acceptPairing: (endpointId: string) => Promise<void>;
+  rejectPairing: (endpointId: string) => Promise<void>;
+  setBackground: (enabled: boolean) => Promise<void>;
 };
 
 type BrowserRecognition = {
@@ -47,13 +72,23 @@ type BrowserRecognition = {
 const SERVICE_ID = 'com.bibliaofflinevoz.messages';
 let speechSubscriptions: Array<{ remove(): void }> = [];
 let webSpeechBridge: SpeechRecognitionBridge | null = null;
-const connectedEndpoints = new Set<string>();
+// peerKey (deviceId estavel) -> { endpointId atual, nome }
+const connectedEndpoints = new Map<string, { endpointId: string; name: string }>();
 const statusListeners = new Set<(status: NearbyStatus) => void>();
 let nearbyRunning = false;
 let nearbySubscriptionsInstalled = false;
 
+function currentPeers(): NearbyPeer[] {
+  return Array.from(connectedEndpoints, ([id, value]) => ({ id, name: value.name }));
+}
+
 function notifyNearbyStatus(error?: string): void {
-  const status = { connectedDeviceCount: connectedEndpoints.size, isRunning: nearbyRunning, error };
+  const status: NearbyStatus = {
+    connectedDeviceCount: connectedEndpoints.size,
+    peers: currentPeers(),
+    isRunning: nearbyRunning,
+    error,
+  };
   statusListeners.forEach((listener) => listener(status));
 }
 
@@ -71,14 +106,21 @@ function installNearbyStatusSubscriptions(): void {
   nearbySubscriptionsInstalled = true;
   nearbyConnections.addListener('nearbyConnectionResult', (event) => {
     const id = endpointId(event);
-    if (!id) return;
-    if (event.connected === true) connectedEndpoints.add(id);
-    else connectedEndpoints.delete(id);
+    const key = typeof event.peerKey === 'string' && event.peerKey ? event.peerKey : id;
+    if (!id || !key) return;
+    if (event.connected === true) {
+      connectedEndpoints.set(key, {
+        endpointId: id,
+        name: typeof event.endpointName === 'string' ? event.endpointName : 'Aparelho',
+      });
+    } else {
+      connectedEndpoints.delete(key);
+    }
     notifyNearbyStatus();
   });
   nearbyConnections.addListener('nearbyDisconnected', (event) => {
-    const id = endpointId(event);
-    if (id) connectedEndpoints.delete(id);
+    const key = typeof event.peerKey === 'string' && event.peerKey ? event.peerKey : endpointId(event);
+    if (key) connectedEndpoints.delete(key);
     notifyNearbyStatus();
   });
   nearbyConnections.addListener('nearbyStopped', () => {
@@ -180,11 +222,14 @@ const androidSpeech: SpeechRecognitionBridge = {
 
 const nearbyBridge: NearbyBridge = {
   isAvailable: () => nearbyConnections.isAvailable,
-  start: async () => {
+  start: async (name: string, deviceId: string) => {
+    // Guarda contra toque duplo: sem isso o segundo start bate em
+    // STATUS_ALREADY_DISCOVERING (8002).
+    if (nearbyRunning) return;
     installNearbyStatusSubscriptions();
     const granted = await nearbyConnections.requestPermissions();
-    if (!granted) throw new Error('Permita Bluetooth e dispositivos próximos para conectar os celulares.');
-    await nearbyConnections.start(SERVICE_ID);
+    if (!granted) throw new Error('Permita localização, Bluetooth e dispositivos próximos para conectar os celulares.');
+    await nearbyConnections.start(SERVICE_ID, name, deviceId);
     nearbyRunning = true;
     notifyNearbyStatus();
   },
@@ -194,20 +239,52 @@ const nearbyBridge: NearbyBridge = {
     connectedEndpoints.clear();
     notifyNearbyStatus();
   },
-  send: async (text) => {
-    const recipients = await nearbyConnections.broadcastText(text);
-    if (recipients === 0) throw new Error('Nenhum aparelho conectado recebeu a mensagem.');
+  send: async (text, target) => {
+    if (target === BROADCAST_TARGET) {
+      const recipients = await nearbyConnections.broadcastText(text);
+      if (recipients === 0) throw new Error('Nenhum aparelho conectado recebeu a mensagem.');
+      return;
+    }
+    const peer = connectedEndpoints.get(target);
+    if (!peer) {
+      throw new Error('Esse contato não está mais conectado.');
+    }
+    await nearbyConnections.sendTextTo(peer.endpointId, text);
   },
   addMessageListener: (listener) => {
     const subscription = nearbyConnections.addListener('nearbyPayload', (event) => {
-      if (typeof event.text === 'string') listener(event.text);
+      if (typeof event.text !== 'string') return;
+      listener({
+        text: event.text,
+        peerId: typeof event.peerKey === 'string' && event.peerKey
+          ? event.peerKey
+          : (typeof event.endpointId === 'string' ? event.endpointId : 'desconhecido'),
+        peerName: typeof event.endpointName === 'string' ? event.endpointName : 'Aparelho',
+      });
     });
     return () => subscription.remove();
   },
+  addPairingListener: (listener) => {
+    const subscription = nearbyConnections.addListener('nearbyAuthRequest', (event) => {
+      if (typeof event.endpointId !== 'string' || typeof event.digits !== 'string') return;
+      listener({
+        endpointId: event.endpointId,
+        peerId: typeof event.peerKey === 'string' && event.peerKey ? event.peerKey : event.endpointId,
+        peerName: typeof event.endpointName === 'string' ? event.endpointName : 'Aparelho',
+        digits: event.digits,
+        incoming: event.isIncomingConnection === true,
+      });
+    });
+    return () => subscription.remove();
+  },
+  acceptPairing: (endpointId) => nearbyConnections.acceptPeer(endpointId),
+  rejectPairing: (endpointId) => nearbyConnections.rejectPeer(endpointId),
+  setBackground: (enabled) =>
+    enabled ? nearbyConnections.enableBackground() : nearbyConnections.disableBackground(),
   addStatusListener: (listener) => {
     installNearbyStatusSubscriptions();
     statusListeners.add(listener);
-    listener({ connectedDeviceCount: connectedEndpoints.size, isRunning: nearbyRunning });
+    listener({ connectedDeviceCount: connectedEndpoints.size, peers: currentPeers(), isRunning: nearbyRunning });
     return () => statusListeners.delete(listener);
   },
 };

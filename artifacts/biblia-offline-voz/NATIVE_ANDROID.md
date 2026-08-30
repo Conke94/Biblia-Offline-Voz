@@ -12,9 +12,12 @@ módulos nativos de voz e Nearby usados pelo projeto.
   mesmo tempo, conectam automaticamente e enviam apenas texto UTF-8.
 - Recepção do texto, leitura automática em voz alta via TTS e armazenamento na
   caixa de entrada.
-- Caixa persistente com limite rígido de 10 mensagens. A 11ª é ignorada até
-  que uma mensagem seja excluída.
-- Leitura manual de cada mensagem recebida e exclusão individual.
+- Conversa persistente com enviadas e recebidas na mesma lista, em ordem
+  cronológica, com balões alinhados por direção.
+- Janela deslizante de 50 mensagens: ao passar do teto, as mais antigas são
+  descartadas automaticamente. Nenhuma mensagem nova é recusada.
+- Entrada por voz (segurar o microfone) ou por teclado.
+- Leitura manual de cada mensagem e exclusão individual.
 
 ## Pré-requisitos no computador
 
@@ -108,21 +111,23 @@ usá-lo diretamente entre os aparelhos.
 4. Aguarde aparecer `1 dispositivo conectado` nos dois aparelhos.
 5. No celular A, mantenha o botão de microfone pressionado, fale por até 15
    segundos e solte.
-6. Revise a transcrição. Toque em **Enviar mensagem**.
-7. No celular B, confira:
+6. Revise a transcrição, ou digite direto no campo. Toque em **Enviar
+   mensagem**.
+7. No celular A, confira que a mensagem enviada aparece em **Conversa**,
+   alinhada à direita.
+8. No celular B, confira:
    - a mensagem é falada automaticamente pelo TTS;
-   - ela aparece em **Caixa de entrada**;
+   - ela aparece em **Conversa**, alinhada à esquerda;
    - o botão de reprodução lê novamente a mensagem;
    - o botão de lixeira exclui apenas aquela mensagem.
 8. Repita do celular B para o A.
 
-## Testar o limite da caixa
+## Testar a janela deslizante
 
-1. Envie 10 mensagens para o mesmo aparelho.
-2. Confirme `10 de 10` na caixa de entrada.
-3. Envie uma 11ª mensagem: ela deve ser ignorada e o aparelho deve avisar que a
-   caixa está cheia.
-4. Exclua uma mensagem e envie novamente: a nova mensagem deve entrar.
+1. Envie mensagens até passar de 50 itens na conversa (enviadas + recebidas).
+2. Confirme que a mensagem mais nova sempre entra: nada é recusado.
+3. Confirme que as mais antigas somem sozinhas conforme novas chegam.
+4. O teto está em `CONVERSATION_LIMIT`, em `context/CommunicationContext.tsx`.
 
 ## Diagnóstico rápido
 

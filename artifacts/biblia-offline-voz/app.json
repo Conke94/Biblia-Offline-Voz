@@ -31,7 +31,7 @@
       ],
       "expo-font",
       "expo-web-browser",
-      "./plugins/withBibliaNative"
+      "./plugins/withBibliaNative.js"
     ],
     "experiments": {
       "typedRoutes": true,

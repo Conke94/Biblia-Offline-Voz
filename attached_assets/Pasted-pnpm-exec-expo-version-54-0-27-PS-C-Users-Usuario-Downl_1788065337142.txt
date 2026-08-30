@@ -1,0 +1,18 @@
+pnpm exec expo --version
+54.0.27
+PS C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz> $env:JAVA_HOME="C:\Users\Usuario\.jdks\ms-17.0.20.1"
+PS C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz> $env:Path="$env:JAVA_HOME\bin;$env:Path"
+PS C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz> $env:NODE_ENV="production"
+PS C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz> pnpm exec expo prebuild --platform android --clean --no-install
+PluginError: Failed to resolve plugin for module "./plugins/withBibliaNative" relative to "C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz". Do you have node modules installed?
+PluginError: Failed to resolve plugin for module "./plugins/withBibliaNative" relative to "C:\Users\Usuario\Downloads\Biblia-Offline-Voz\artifacts\biblia-offline-voz". Do you have node modules installed?
+    at resolvePluginForModule (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\utils\plugin-resolver.js:94:9)
+    at resolveConfigPluginFunctionWithInfo (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\utils\plugin-resolver.js:143:7)
+    at resolveConfigPluginFunction (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\utils\plugin-resolver.js:134:7)
+    at withStaticPlugin (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\plugins\withStaticPlugin.js:83:70)
+    at C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\plugins\withPlugins.js:28:84
+    at Array.reduce (<anonymous>)
+    at withPlugins (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\plugins\withPlugins.js:28:18)
+    at withConfigPlugins (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\plugins\withConfigPlugins.js:33:47)
+    at fillAndReturnConfig (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\Config.js:229:78)
+    at getConfig (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\Config.js:286:10)

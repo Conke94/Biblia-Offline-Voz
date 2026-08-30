@@ -5,9 +5,9 @@ import { useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
-import { bibleBooks, BibleBook, BibleChapter, lessons, ContentType } from '@/data/content';
+import { bibleBooks, BibleBook, lessons, ContentType } from '@/data/content';
 
-type BibleLevel = 'books' | 'chapters' | 'verses';
+type BibleLevel = 'books' | 'chapters';
 
 export default function LibraryScreen() {
   const insets = useSafeAreaInsets();
@@ -16,7 +16,6 @@ export default function LibraryScreen() {
   const [activeTab, setActiveTab] = useState<ContentType>('biblia');
   const [level, setLevel] = useState<BibleLevel>('books');
   const [selectedBook, setSelectedBook] = useState<BibleBook | null>(null);
-  const [selectedChapter, setSelectedChapter] = useState<BibleChapter | null>(null);
 
   const paddingTop = Platform.OS === 'web' ? Math.max(insets.top, 67) : insets.top;
 
@@ -25,15 +24,11 @@ export default function LibraryScreen() {
     if (tab === 'biblia') {
       setLevel('books');
       setSelectedBook(null);
-      setSelectedChapter(null);
     }
   };
 
   const goBackLevel = () => {
-    if (level === 'verses') {
-      setLevel('chapters');
-      setSelectedChapter(null);
-    } else if (level === 'chapters') {
+    if (level === 'chapters') {
       setLevel('books');
       setSelectedBook(null);
     }
@@ -42,11 +37,9 @@ export default function LibraryScreen() {
   const title =
     activeTab === 'aula'
       ? 'Aulas'
-      : level === 'books'
-        ? 'Livros'
-        : level === 'chapters'
-          ? selectedBook?.name
-          : `${selectedBook?.name} ${selectedChapter?.number}`;
+        : level === 'books'
+          ? 'Livros'
+          : selectedBook?.name;
 
   const renderBibleContent = () => {
     if (level === 'books') {
@@ -83,32 +76,14 @@ export default function LibraryScreen() {
               subtitle={`${item.verses.length} versículos cadastrados`}
               icon="bookmark"
               testID={`chapter-${item.number}`}
-              onPress={() => {
-                setSelectedChapter(item);
-                setLevel('verses');
-              }}
+              onPress={() => router.push(`/listen/b-${selectedBook.id}-${item.number}`)}
             />
           )}
         />
       );
     }
 
-    return (
-      <FlatList
-        data={selectedChapter?.verses ?? []}
-        keyExtractor={(verse) => String(verse.number)}
-        contentContainerStyle={styles.listContent}
-        renderItem={({ item }) => (
-          <ListCard
-            title={`Versículo ${item.number}`}
-            subtitle={item.text}
-            icon="volume-2"
-            testID={`verse-${item.number}`}
-            onPress={() => router.push(`/listen/${item.contentId}`)}
-          />
-        )}
-      />
-    );
+    return null;
   };
 
   const ListCard = ({
@@ -179,7 +154,7 @@ export default function LibraryScreen() {
             <Text style={[styles.sectionTitle, { color: colors.foreground }]}>{title}</Text>
             {activeTab === 'biblia' && (
               <Text style={[styles.breadcrumb, { color: colors.mutedForeground }]}>
-                Livro → Capítulo → Versículo
+                Livro → Capítulo
               </Text>
             )}
           </View>
@@ -204,6 +179,14 @@ export default function LibraryScreen() {
           )}
         />
       )}
+      <Pressable
+        testID="open-transcription"
+        onPress={() => router.push('/transcribe')}
+        style={[styles.transcribeButton, { backgroundColor: colors.primary }]}
+      >
+        <Feather name="mic" size={22} color={colors.primaryForeground} />
+        <Text style={[styles.transcribeText, { color: colors.primaryForeground }]}>Transcrever voz</Text>
+      </Pressable>
     </View>
   );
 }
@@ -225,4 +208,17 @@ const styles = StyleSheet.create({
   cardText: { flex: 1, marginRight: 10 },
   cardTitle: { fontSize: 17, fontFamily: 'Inter_600SemiBold', marginBottom: 4 },
   cardSubtitle: { fontSize: 14, lineHeight: 19, fontFamily: 'Inter_400Regular' },
+  transcribeButton: {
+    position: 'absolute',
+    right: 20,
+    bottom: 24,
+    minHeight: 54,
+    paddingHorizontal: 20,
+    borderRadius: 27,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    elevation: 4,
+  },
+  transcribeText: { fontSize: 15, fontFamily: 'Inter_700Bold' },
 });

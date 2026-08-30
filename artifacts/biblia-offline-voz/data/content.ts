@@ -6,6 +6,7 @@ export interface ContentItem {
   title: string;
   subtitle: string;
   text: string;
+  verses?: BibleVerse[];
 }
 
 export interface BibleVerse {
@@ -97,19 +98,20 @@ export const lessons: ContentItem[] = [
   },
 ];
 
-const verseContent: ContentItem[] = bibleBooks.flatMap((book) =>
+const chapterContent: ContentItem[] = bibleBooks.flatMap((book) =>
   book.chapters.flatMap((chapter) =>
-    chapter.verses.map((verse) => ({
-      id: verse.contentId,
+    [{
+      id: `b-${book.id}-${chapter.number}`,
       type: 'biblia' as const,
-      title: `${book.name} ${chapter.number}:${verse.number}`,
-      subtitle: `Versículo ${verse.number}`,
-      text: verse.text,
-    })),
+      title: `${book.name} ${chapter.number}`,
+      subtitle: `${chapter.verses.length} versículos cadastrados`,
+      text: chapter.verses.map((verse) => `Versículo ${verse.number}. ${verse.text}`).join(' '),
+      verses: chapter.verses,
+    }],
   ),
 );
 
-export const contentData: ContentItem[] = [...verseContent, ...lessons];
+export const contentData: ContentItem[] = [...chapterContent, ...lessons];
 
 export function getContentById(id: string): ContentItem | undefined {
   return contentData.find((item) => item.id === id);

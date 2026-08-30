@@ -121,9 +121,14 @@ export default function ListenScreen() {
         )}
 
         <View style={[styles.textContainer, { backgroundColor: colors.card, borderRadius: colors.radius }]}>
-          <Text style={[styles.contentBody, { color: colors.cardForeground }]}>
-            {item.text}
-          </Text>
+          {item.verses ? item.verses.map((verse) => (
+            <View key={verse.number} style={styles.verseRow}>
+              <Text style={[styles.verseNumber, { color: colors.primary }]}>{verse.number}</Text>
+              <Text style={[styles.contentBody, { color: colors.cardForeground }]}>{verse.text}</Text>
+            </View>
+          )) : (
+            <Text style={[styles.contentBody, { color: colors.cardForeground }]}>{item.text}</Text>
+          )}
         </View>
       </ScrollView>
 
@@ -245,9 +250,22 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   contentBody: {
+    flex: 1,
     fontSize: 18,
     fontFamily: 'Inter_400Regular',
     lineHeight: 28,
+  },
+  verseRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+    marginBottom: 18,
+  },
+  verseNumber: {
+    minWidth: 24,
+    fontSize: 15,
+    lineHeight: 28,
+    fontFamily: 'Inter_700Bold',
   },
   controlsContainer: {
     position: 'absolute',

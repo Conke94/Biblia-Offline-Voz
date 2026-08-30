@@ -38,6 +38,7 @@ function RootLayoutNav() {
     >
       <Stack.Screen name="index" options={{ headerShown: false, title: 'Início' }} />
       <Stack.Screen name="listen/[id]" options={{ title: 'Ouvir', presentation: 'card' }} />
+      <Stack.Screen name="transcribe" options={{ title: 'Transcrever voz', presentation: 'card' }} />
     </Stack>
   );
 }

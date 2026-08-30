@@ -1,0 +1,385 @@
+PS C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\artifacts\biblia-offline-voz\android> .\gradlew assembleRelease
+
+Starting a Gradle Daemon, 4 stopped Daemons could not be reused, use --status for details
+
+
+
+> Configure project :expo-gradle-plugin:expo-autolinking-plugin
+
+w: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/node_modules/.pnpm/expo-modules-autolinking@3.0.27/node_modules/expo-modules-autolinking/android/expo-gradle-plugin/expo-autolinking-plugin/build.gradle.kts:25:3: 'kotlinOptions(KotlinJvmOptionsDeprecated /* = KotlinJvmOptions */.() -> Unit): Unit' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln
+
+
+
+> Configure project :expo-gradle-plugin:expo-autolinking-settings-plugin
+
+w: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/node_modules/.pnpm/expo-modules-autolinking@3.0.27/node_modules/expo-modules-autolinking/android/expo-gradle-plugin/expo-autolinking-settings-plugin/build.gradle.kts:30:3: 'kotlinOptions(KotlinJvmOptionsDeprecated /* = KotlinJvmOptions */.() -> Unit): Unit' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln
+
+
+
+> Configure project :expo-dev-launcher-gradle-plugin
+
+w: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/node_modules/.pnpm/expo-dev-launcher@6.0.21_expo@54.0.37/node_modules/expo-dev-launcher/expo-dev-launcher-gradle-plugin/build.gradle.kts:25:3: 'kotlinOptions(KotlinJvmOptionsDeprecated /* = KotlinJvmOptions */.() -> Unit): Unit' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln
+
+
+
+> Configure project :expo-module-gradle-plugin
+
+w: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/node_modules/.pnpm/expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876/node_modules/expo-modules-core/expo-module-gradle-plugin/build.gradle.kts:58:3: 'kotlinOptions(KotlinJvmOptionsDeprecated /* = KotlinJvmOptions */.() -> Unit): Unit' is deprecated. Please migrate to the compilerOptions DSL. More details are here: https://kotl.in/u1r8ln
+
+
+
+> Task :expo-module-gradle-plugin:compileKotlin
+
+w: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/node_modules/.pnpm/expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876/node_modules/expo-modules-core/expo-module-gradle-plugin/src/main/kotlin/expo/modules/plugin/android/AndroidLibraryExtension.kt:9:24 'var targetSdk: Int?' is deprecated. Will be removed from library DSL in v9.0. Use testOptions.targetSdk or/and lint.targetSdk instead.
+
+
+
+> Configure project :
+
+[ExpoRootProject] Using the following versions:
+
+  - buildTools:  36.0.0
+
+  - minSdk:      24
+
+  - compileSdk:  36
+
+  - targetSdk:   36
+
+  - ndk:         27.1.12297006
+
+  - kotlin:      2.1.20
+
+  - ksp:         2.1.20-2.0.1
+
+
+
+> Configure project :app
+
+ Ôä╣´©Å  Applying gradle plugin 'expo-dev-launcher-gradle-plugin'
+
+This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+
+Checking the license for package NDK (Side by side) 27.1.12297006 in C:\Users\Usuario\AppData\Local\Android\Sdk\licenses
+
+License for package NDK (Side by side) 27.1.12297006 accepted.
+
+Preparing "Install NDK (Side by side) 27.1.12297006 v.27.1.12297006".
+
+"Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" ready.
+
+Installing NDK (Side by side) 27.1.12297006 in C:\Users\Usuario\AppData\Local\Android\Sdk\ndk\27.1.12297006
+
+"Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" complete.
+
+"Install NDK (Side by side) 27.1.12297006 v.27.1.12297006" finished.
+
+
+
+> Configure project :expo
+
+
+
+Using expo modules
+
+  - expo-constants (18.0.14)
+
+  - expo-dev-client (6.0.21)
+
+  - expo-dev-launcher (6.0.21)G [3m 6s]
+
+  - expo-dev-menu (7.0.19)
+
+  - expo-dev-menu-interface (2.0.0) 6s]
+
+  - expo-json-utils (0.15.0)
+
+  - expo-manifests (1.0.11)
+
+  - expo-modules-core (3.0.30)G [3m 8s]
+
+  - expo-updates-interface (2.0.0)m 9s]
+
+  - [­ƒôª] expo-asset (12.0.13)
+
+  - [­ƒôª] expo-blur (15.0.8)face
+
+  - [­ƒôª] expo-file-system (19.0.24)
+
+  - [­ƒôª] expo-font (14.0.12)
+
+  - [­ƒôª] expo-haptics (15.0.8)
+
+  - [­ƒôª] expo-image (3.0.11)
+
+  - [­ƒôª] expo-image-loader (6.0.0)
+
+  - [­ƒôª] expo-image-picker (17.0.11)
+
+  - [­ƒôª] expo-keep-awake (15.0.8)
+
+  - [­ƒôª] expo-linear-gradient (15.0.8)
+
+  - [­ƒôª] expo-linking (8.0.12)
+
+  - [­ƒôª] expo-location (19.0.8)
+
+  - [­ƒôª] expo-speech (14.0.8)
+
+  - [­ƒôª] expo-splash-screen (31.0.13)
+
+  - [­ƒôª] expo-system-ui (6.0.9)
+
+  - [­ƒôª] expo-web-browser (15.0.11)
+
+
+
+Checking the license for package Android SDK Build-Tools 36 in C:\Users\Usuario\AppData\Local\Android\Sdk\licenses
+
+License for package Android SDK Build-Tools 36 accepted.
+
+Preparing "Install Android SDK Build-Tools 36 v.36.0.0".
+
+"Install Android SDK Build-Tools 36 v.36.0.0" ready.
+
+Installing Android SDK Build-Tools 36 in C:\Users\Usuario\AppData\Local\Android\Sdk\build-tools\36.0.0
+
+"Install Android SDK Build-Tools 36 v.36.0.0" complete.
+
+"Install Android SDK Build-Tools 36 v.36.0.0" finished.
+
+[=======================================] 100% Fetch remote repository...       
+
+
+
+> Task :expo-constants:createExpoConfig FAILED
+
+The NODE_ENV environment variable is required but was not specified. Ensure the project is bundled with Expo CLI or NODE_ENV is set. Using only .env.local and .env
+
+C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\plugins\withStaticPlugin.js:124
+
+        throw error;
+
+        ^
+
+
+
+Error: Cannot find module '@expo/config-plugins'
+
+Require stack:
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\artifacts\biblia-offline-voz\plugins\withBibliaNative.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\utils\plugin-resolver.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\plugins\withStaticPlugin.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config-plugins@54.0.5\node_modules\@expo\config-plugins\build\index.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\plugins\withConfigPlugins.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\Config.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\@expo+config@12.0.14\node_modules\@expo\config\build\index.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-constants@18.0.14_expo_e6d179be06f84afaf8fb3c4ace1fcd01\node_modules\expo-constants\scripts\build\getAppConfig.js
+
+- C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-constants@18.0.14_expo_e6d179be06f84afaf8fb3c4ace1fcd01\node_modules\expo-constants\scripts\getAppConfig.js
+
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+
+    at Module._load (node:internal/modules/cjs/loader:1294:5)
+
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+
+    at Module.require (node:internal/modules/cjs/loader:1617:12)
+
+    at require (node:internal/modules/helpers:153:16)
+
+    at Object.<anonymous> (C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\artifacts\biblia-offline-voz\plugins\withBibliaNative.js:6:5)
+
+    at Module._compile (node:internal/modules/cjs/loader:1871:14) {
+
+  name: 'PluginError',
+
+  isPluginError: true,
+
+  code: 'INVALID_PLUGIN_IMPORT',
+
+  cause: undefined
+
+}
+
+
+
+Node.js v24.18.0
+
+
+
+> Task :expo-modules-core:configureCMakeRelWithDebInfo[arm64-v8a]
+
+Checking the license for package CMake 3.22.1 in C:\Users\Usuario\AppData\Local\Android\Sdk\licenses
+
+License for package CMake 3.22.1 accepted.
+
+Preparing "Install CMake 3.22.1 v.3.22.1".
+
+"Install CMake 3.22.1 v.3.22.1" ready.
+
+Installing CMake 3.22.1 in C:\Users\Usuario\AppData\Local\Android\Sdk\cmake\3.22.1
+
+"Install CMake 3.22.1 v.3.22.1" complete.
+
+"Install CMake 3.22.1 v.3.22.1" finished.
+
+
+
+> Task :expo-modules-core:configureCMakeRelWithDebInfo[arm64-v8a] FAILED
+
+
+
+[Incubating] Problems report is available at: file:///C:/Users/Usuario/Downloads/Biblia-Offline-Voz/Biblia-Offline-Voz/artifacts/biblia-offline-voz/android/build/reports/problems/problems-report.html
+
+
+
+FAILURE: Build completed with 2 failures.
+
+
+
+1: Task failed with an exception.
+
+-----------
+
+* What went wrong:
+
+Execution failed for task ':expo-constants:createExpoConfig'.
+
+> Process 'command 'cmd'' finished with non-zero exit value 1
+
+
+
+* Try:
+
+> Run with --stacktrace option to get the stack trace.
+
+> Run with --info or --debug option to get more log output.
+
+> Run with --scan to get full insights.
+
+> Get more help at https://help.gradle.org.
+
+==============================================================================
+
+
+
+2: Task failed with an exception.
+
+-----------
+
+* What went wrong:
+
+Execution failed for task ':expo-modules-core:configureCMakeRelWithDebInfo[arm64-v8a]'.
+
+> [CXX1428] exception while building Json A problem occurred starting process 'command 'C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876\node_modules\expo-modules-core\android\build\intermediates\cxx\RelWithDebInfo\501c6eb1\logs\arm64-v8a\prefab_command.bat'' : org.gradle.process.internal.ExecException: A problem occurred starting process 'command 'C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876\node_modules\expo-modules-core\android\build\intermediates\cxx\RelWithDebInfo\501c6eb1\logs\arm64-v8a\prefab_command.bat''
+
+        at org.gradle.process.internal.DefaultExecHandle.execExceptionFor(DefaultExecHandle.java:241)
+
+        at org.gradle.process.internal.DefaultExecHandle.setEndStateInfo(DefaultExecHandle.java:218)
+
+        at org.gradle.process.internal.DefaultExecHandle.failed(DefaultExecHandle.java:396)
+
+        at org.gradle.process.internal.ExecHandleRunner.lambda$run$3(ExecHandleRunner.java:102)
+
+        at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+
+        at org.gradle.process.internal.ExecHandleRunner.run(ExecHandleRunner.java:101)
+
+        at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+
+        at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+
+        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+
+        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+
+        at java.base/java.lang.Thread.run(Thread.java:840)
+
+  Caused by: net.rubygrapefruit.platform.NativeException: Could not start 'C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876\node_modules\expo-modules-core\android\build\intermediates\cxx\RelWithDebInfo\501c6eb1\logs\arm64-v8a\prefab_command.bat'
+
+        at net.rubygrapefruit.platform.internal.DefaultProcessLauncher.start(DefaultProcessLauncher.java:27)
+
+        at net.rubygrapefruit.platform.internal.WindowsProcessLauncher.start(WindowsProcessLauncher.java:22)
+
+        at net.rubygrapefruit.platform.internal.WrapperProcessLauncher.start(WrapperProcessLauncher.java:36)
+
+        at org.gradle.process.internal.ExecHandleRunner.startProcess(ExecHandleRunner.java:122)
+
+        at org.gradle.process.internal.ExecHandleRunner.lambda$run$0(ExecHandleRunner.java:80)
+
+        at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+
+        at org.gradle.process.internal.ExecHandleRunner.run(ExecHandleRunner.java:79)
+
+        ... 5 more
+
+  Caused by: java.io.IOException: Cannot run program "C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876\node_modules\expo-modules-core\android\build\intermediates\cxx\RelWithDebInfo\501c6eb1\logs\arm64-v8a\prefab_command.bat" (in directory "C:\Users\Usuario\Downloads\Biblia-Offline-Voz\Biblia-Offline-Voz\node_modules\.pnpm\expo-modules-core@3.0.30_re_7c2722b5835409e2e8bf1b979b6c3876\node_modules\expo-modules-core\android"): CreateProcess error=2, O sistema n├úo pode encontrar o arquivo especificado
+
+        at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1143)
+
+        at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1073)
+
+        at net.rubygrapefruit.platform.internal.DefaultProcessLauncher.start(DefaultProcessLauncher.java:25)
+
+        ... 11 more
+
+  Caused by: java.io.IOException: CreateProcess error=2, O sistema n├úo pode encontrar o arquivo especificado
+
+        at java.base/java.lang.ProcessImpl.create(Native Method)
+
+        at java.base/java.lang.ProcessImpl.<init>(ProcessImpl.java:505)
+
+        at java.base/java.lang.ProcessImpl.start(ProcessImpl.java:158)
+
+        at java.base/java.lang.ProcessBuilder.start(ProcessBuilder.java:1110)
+
+        ... 13 more
+
+
+
+
+
+* Try:
+
+> Run with --stacktrace option to get the stack trace.
+
+> Run with --info or --debug option to get more log output.
+
+> Run with --scan to get full insights.
+
+> Get more help at https://help.gradle.org.
+
+==============================================================================
+
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+
+
+For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+
+
+BUILD FAILED in 5m 40s
+
+63 actionable tasks: 63 executed

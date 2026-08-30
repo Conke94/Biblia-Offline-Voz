@@ -18,7 +18,7 @@ módulos nativos de voz e Nearby usados pelo projeto.
 
 ## Pré-requisitos no computador
 
-1. Instale Node.js 20 ou mais recente e pnpm.
+1. Instale Node.js 22 LTS e pnpm. Evite Node.js 24 para este build nativo.
 2. Instale Android Studio com:
    - Android SDK Platform 36;
    - Android SDK Build-Tools 36;
@@ -30,6 +30,18 @@ módulos nativos de voz e Nearby usados pelo projeto.
 pnpm install
 cd artifacts/biblia-offline-voz
 pnpm exec expo prebuild --platform android --clean --no-install
+```
+
+No Windows, extraia o projeto para um caminho curto, por exemplo
+`C:\dev\bov`. Caminhos longos dentro de `node_modules\.pnpm` podem ultrapassar
+o limite usado por CMake/Prefab e aparecer como `CreateProcess error=2`.
+
+No PowerShell, configure o Java e o ambiente de produção antes do build:
+
+```powershell
+$env:JAVA_HOME="C:\Users\Usuario\.jdks\ms-17.0.20.1"
+$env:Path="$env:JAVA_HOME\bin;$env:Path"
+$env:NODE_ENV="production"
 ```
 
 O plugin local `plugins/withBibliaNative.js` recria todo o código Kotlin,
@@ -49,7 +61,7 @@ No Windows:
 
 ```bat
 cd artifacts\biblia-offline-voz\android
-gradlew.bat assembleRelease
+gradlew.bat assembleRelease --no-parallel
 ```
 
 O APK será criado em:
